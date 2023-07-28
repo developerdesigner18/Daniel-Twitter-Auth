@@ -80,11 +80,7 @@ app.get('/twitter/request-token', async (req, res) => {
   try {
     const { oauthToken } = await getRequestToken();
 
-    // Modify the scope parameter in the authorization URL
-    const authUrl = `https://api.twitter.com/oauth/authorize?oauth_token=${oauthToken}`;
-
-// In this example, the application is requesting both read and write access.
-
+    const authUrl = `https://api.twitter.com/oauth/authenticate?oauth_token=${oauthToken}`;
     res.json({ authUrl });
   } catch (error) {
     console.error('Error during OAuth flow:', error.message);
@@ -101,10 +97,10 @@ app.get('/twitter/callback', async (req, res) => {
   console.log('oauthToken:', oauthToken);
 
   try {
-    const { accessToken, accessTokenSecret } = await getAccessToken(
-      oauthToken,
-      oauthVerifier
-    );
+      const { accessToken, accessTokenSecret } = await getAccessToken(
+        oauthToken,
+        oauthVerifier
+      );
 
     console.log('accessToken:', accessToken);
     console.log('accessTokenSecret:', accessTokenSecret);
@@ -114,15 +110,17 @@ app.get('/twitter/callback', async (req, res) => {
     // and the user details. You can use this information as needed.
 
     // For demonstration purposes, we'll return the user details as JSON.
-    console.log(userDetails, "sd");
     res.json(userDetails);
+    // At this point, you have the user's access token and access token secret.
+    // You can use these tokens to make authorized requests to the Twitter API.
+    // For demonstration purposes, we'll return the access token and access token secret as JSON.
+    // res.json({ accessToken, accessTokenSecret });
   } catch (error) {
     console.error('Error during access token retrieval:', error.message);
     console.error('Twitter API error response:', error.response?.data);
     res.status(500).json({ error: 'Failed to get access token.' });
   }
 });
-
 // const fetchUserDetails = async (accessToken, accessTokenSecret) => {
 //   const client = new Twitter({
 //     consumer_key: consumerKey,
@@ -166,6 +164,6 @@ const fetchUserDetails = async (accessToken, accessTokenSecret) => {
     throw new Error('Failed to fetch user details.');
   }
 };
-
+  
 
 app.listen(3001, () => console.log('Backend server running on port 3001.'));
