@@ -74,6 +74,9 @@ const getAccessToken = async (oauthToken, oauthVerifier) => {
   }
 };
 
+app.get("/test",(req,res)=>{
+  return res.json("Hello")
+})
 
 // Route to initiate the OAuth 1.0a flow and get the request token
 app.get('/twitter/request-token', async (req, res) => {
@@ -164,6 +167,6 @@ const fetchUserDetails = async (accessToken, accessTokenSecret) => {
     throw new Error('Failed to fetch user details.');
   }
 };
-  
+
 
 app.listen(3001, () => console.log('Backend server running on port 3001.'));

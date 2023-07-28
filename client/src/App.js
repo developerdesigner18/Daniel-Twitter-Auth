@@ -5,13 +5,13 @@ function App() {
   const handleTwitterSignIn = async () => {
     try {
       // Backend server URL for handling the OAuth callback
-      const backendUrl = "http://localhost:3001";
+      const backendUrl = "https://daniel-twitter-auth-production.up.railway.app";
 
       // Initiate the OAuth 1.0a flow by making a request to the backend
       const response = await axios.get(`${backendUrl}/twitter/request-token`);
 
       // Redirect the user to the Twitter authorization URL
-      window.location.href = response.data.authUrl;
+      window.location.href = response.data.authUrl; 
     } catch (error) {
       console.error("Error initiating Twitter sign-in:", error);
     }
