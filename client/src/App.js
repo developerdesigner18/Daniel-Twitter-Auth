@@ -1,11 +1,11 @@
 import logo from "./logo.svg";
 import "./App.css";
-import axios from 'axios'
+import axios from "axios";
 function App() {
   const handleTwitterSignIn = async () => {
     try {
       // Backend server URL for handling the OAuth callback
-      const backendUrl = "https://twitter-auth-daniel.onrender.com/";
+      const backendUrl = "https://twitter-auth-daniel.onrender.com";
 
       // Initiate the OAuth 1.0a flow by making a request to the backend
       const response = await axios.get(`${backendUrl}/twitter/request-token`);
@@ -20,10 +20,7 @@ function App() {
     <div>
       <h1>Get started, sign in with your Twitter account:</h1>
       <div style={{ marginTop: 10, marginBottom: 10 }}>
-        <button
-          id="btnSignIn"
-          onClick={handleTwitterSignIn}
-           >
+        <button id="btnSignIn" onClick={handleTwitterSignIn}>
           {" "}
           Sign in with Twitter
         </button>
