@@ -23,7 +23,7 @@ const getRequestToken = async () => {
   const requestData = {
     url: 'https://api.twitter.com/oauth/request_token',
     method: 'POST',
-    data: { oauth_callback: 'http://localhost:3001/twitter/callback' },
+    data: { oauth_callback: 'https://twitter-auth-daniel.onrender.com/twitter/callback' },
   };
 
   try {
@@ -74,16 +74,15 @@ const getAccessToken = async (oauthToken, oauthVerifier) => {
   }
 };
 
-app.get("/test",(req,res)=>{
-  return res.json("Hello")
-})
 
 // Route to initiate the OAuth 1.0a flow and get the request token
 app.get('/twitter/request-token', async (req, res) => {
   try {
     const { oauthToken } = await getRequestToken();
 
-    const authUrl = `https://api.twitter.com/oauth/authenticate?oauth_token=${oauthToken}`;
+    // Modify the scope parameter in the authorization URL
+    const authUrl = `https://api.twitter.com/oauth/authorize?oauth_token=${oauthToken}`;
+
     res.json({ authUrl });
   } catch (error) {
     console.error('Error during OAuth flow:', error.message);
@@ -100,10 +99,10 @@ app.get('/twitter/callback', async (req, res) => {
   console.log('oauthToken:', oauthToken);
 
   try {
-      const { accessToken, accessTokenSecret } = await getAccessToken(
-        oauthToken,
-        oauthVerifier
-      );
+    const { accessToken, accessTokenSecret } = await getAccessToken(
+      oauthToken,
+      oauthVerifier
+    );
 
     console.log('accessToken:', accessToken);
     console.log('accessTokenSecret:', accessTokenSecret);
@@ -113,17 +112,15 @@ app.get('/twitter/callback', async (req, res) => {
     // and the user details. You can use this information as needed.
 
     // For demonstration purposes, we'll return the user details as JSON.
+    console.log(userDetails, "sd");
     res.json(userDetails);
-    // At this point, you have the user's access token and access token secret.
-    // You can use these tokens to make authorized requests to the Twitter API.
-    // For demonstration purposes, we'll return the access token and access token secret as JSON.
-    // res.json({ accessToken, accessTokenSecret });
   } catch (error) {
     console.error('Error during access token retrieval:', error.message);
     console.error('Twitter API error response:', error.response?.data);
     res.status(500).json({ error: 'Failed to get access token.' });
   }
 });
+
 // const fetchUserDetails = async (accessToken, accessTokenSecret) => {
 //   const client = new Twitter({
 //     consumer_key: consumerKey,
